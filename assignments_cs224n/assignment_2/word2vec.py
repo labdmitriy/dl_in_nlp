@@ -68,22 +68,21 @@ def naiveSoftmaxLossAndGradient(
     # softmax function - log-sum-exp trick
     # https://timvieira.github.io/blog/post/2014/02/11/exp-normalize-trick
     
-    # (N x d) * (d x 1) = (N x 1)
-    y_pred = softmax(np.dot(outsideVectors, centerWordVec))
+    # (1 x d) * (d x N) = (N x 1)
+    y_pred = softmax(np.dot(centerWordVec, outsideVectors.T)).reshape(-1, 1)
     
     # (N x 1)
     y_true = np.zeros_like(y_pred) 
     y_true[outsideWordIdx] = 1
     
-    # (N x 1)
-    loss = -np.log(y_pred) 
+    # (scalar)
+    loss = -np.log(y_pred[outsideWordIdx])
     
     # (d x N) * (N x 1) = (d x 1)
     gradCenterVec = np.dot(outsideVectors.T, y_pred - y_true)
     
-    # (scalar) * (N x 
-    gradOutsideVecs = (1 - np.dot(y_true, y_pred)) * centerWordVec
-    gradOutsideVecs[outsideWordIdx] *= -1 
+    # (N x 1) * (1 x d) = (N x d)
+    gradOutsideVecs = np.dot((y_pred - y_true), centerWordVec.reshape(1, -1))
 
     ### END YOUR CODE
 
@@ -131,8 +130,39 @@ def negSamplingLossAndGradient(
     ### YOUR CODE HERE
 
     ### Please use your implementation of sigmoid in here.
-
-
+    gradOutsideVecs = np.zeros_like(outsideVectors)
+    
+    # (d, )
+    outsideWordVec = outsideVectors[outsideWordIdx]
+    
+    # (d,) * (d,) = (scalar)
+    vec_dot = np.dot(outsideWordVec, centerWordVec)
+    
+    # (scalar)
+    loss = -np.log(sigmoid(vec_dot))
+    
+    # (scalar) * (d,) = (d,)
+    gradCenterVec = (sigmoid(vec_dot) - 1) * outsideWordVec
+    
+    # (scalar) * (d,) = (d,)
+    gradOutsideVecs[outsideWordIdx] = (sigmoid(vec_dot) - 1) * centerWordVec
+    
+    for negWordIdx in negSampleWordIndices:
+        # (d,)
+        negWordVec = outsideVectors[negWordIdx]
+        
+        # (d, ) * (d, ) = (scalar)
+        neg_vec_dot = np.dot(negWordVec, centerWordVec)
+        
+        # (scalar)
+        loss += -np.log(sigmoid(-neg_vec_dot))
+        
+        # (scalar) * (d, ) = (d, )
+        gradCenterVec += -(sigmoid(-neg_vec_dot) - 1) * negWordVec
+        
+        # (scalar) * (d, ) = (d, )
+        gradOutsideVecs[negWordIdx] += -(sigmoid(-neg_vec_dot) - 1) * centerWordVec
+        
     ### END YOUR CODE
 
     return loss, gradCenterVec, gradOutsideVecs
@@ -174,7 +204,18 @@ def skipgram(currentCenterWord, windowSize, outsideWords, word2Ind,
     gradOutsideVectors = np.zeros(outsideVectors.shape)
 
     ### YOUR CODE HERE
-
+    centerWordIdx = word2Ind[currentCenterWord]
+    centerWordVec = centerWordVectors[centerWordIdx]
+    
+    for outsideWord in outsideWords:
+        outsideWordIdx = word2Ind[outsideWord]
+        loss_grads = word2vecLossAndGradient(centerWordVec,
+                                             outsideWordIdx,
+                                             outsideVectors,
+                                             dataset)
+        loss += loss_grads[0]
+        gradCenterVecs[centerWordIdx] += loss_grads[1].squeeze()
+        gradOutsideVectors += loss_grads[2]
     ### END YOUR CODE
 
     return loss, gradCenterVecs, gradOutsideVectors
@@ -210,9 +251,12 @@ def word2vec_sgd_wrapper(word2vecModel, word2Ind, wordVectors, dataset,
 def test_word2vec():
     """ Test the two word2vec implementations, before running on Stanford Sentiment Treebank """
     dataset = type('dummy', (), {})()
+    
+    # This function will never sample 'e', because possible index range = [0, 1, 2, 3]
     def dummySampleTokenIdx():
         return random.randint(0, 4)
-
+    
+    # This function will never sample 'e', because possible index range = [0, 1, 2, 3]
     def getRandomContext(C):
         tokens = ["a", "b", "c", "d", "e"]
         return tokens[random.randint(0,4)], \
