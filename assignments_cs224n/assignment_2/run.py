@@ -73,3 +73,9 @@ plt.xlim((np.min(coord[:,0]), np.max(coord[:,0])))
 plt.ylim((np.min(coord[:,1]), np.max(coord[:,1])))
 
 plt.savefig('word_vectors.png')
+
+# run result:
+# iter 40000: 9.812206
+# sanity check: cost at convergence should be around or below 10
+# training took 9662 seconds
+
