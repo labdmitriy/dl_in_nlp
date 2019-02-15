@@ -192,14 +192,14 @@ def negSamplingLossAndGradient(
     
     # group gradients by indices
     unique_idxs = np.unique(negSampleWordIndices)
-    grads = []
+    neg_grads = []
     
     for idx in unique_idxs:
-        grads.append(outside_grads[negSampleWordIndices == idx].sum(axis=0))
-    grads = np.array(grads)
+        neg_grads.append(outside_grads[negSampleWordIndices == idx].sum(axis=0))
+    neg_grads = np.array(neg_grads)
     
-    # add gradients to corresponding indices
-    gradOutsideVecs[unique_idxs] += grads
+    # add gradients to corresponding negative vectors
+    gradOutsideVecs[unique_idxs] += neg_grads
     
 
     ### END YOUR CODE
