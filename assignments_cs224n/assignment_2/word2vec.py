@@ -139,30 +139,69 @@ def negSamplingLossAndGradient(
     vec_dot = np.dot(outsideWordVec, centerWordVec)
     
     # (scalar)
-    loss = -np.log(sigmoid(vec_dot))
+    y_prob = sigmoid(vec_dot)
+    
+    # (scalar)
+    loss = -np.log(y_prob)
     
     # (scalar) * (d,) = (d,)
-    gradCenterVec = (sigmoid(vec_dot) - 1) * outsideWordVec
+    gradCenterVec = (y_prob - 1) * outsideWordVec
     
     # (scalar) * (d,) = (d,)
     gradOutsideVecs[outsideWordIdx] = (sigmoid(vec_dot) - 1) * centerWordVec
     
-    for negWordIdx in negSampleWordIndices:
-        # (d,)
-        negWordVec = outsideVectors[negWordIdx]
-        
-        # (d, ) * (d, ) = (scalar)
-        neg_vec_dot = np.dot(negWordVec, centerWordVec)
-        
-        # (scalar)
-        loss += -np.log(sigmoid(-neg_vec_dot))
-        
-        # (scalar) * (d, ) = (d, )
-        gradCenterVec += -(sigmoid(-neg_vec_dot) - 1) * negWordVec
-        
-        # (scalar) * (d, ) = (d, )
-        gradOutsideVecs[negWordIdx] += -(sigmoid(-neg_vec_dot) - 1) * centerWordVec
-        
+#    for negWordIdx in negSampleWordIndices:
+#        # (d,)
+#        negWordVec = outsideVectors[negWordIdx]
+#        
+#        # (d, ) * (d, ) = (scalar)
+#        neg_vec_dot = np.dot(negWordVec, centerWordVec)
+#        
+#        # (scalar)    
+#        neg_y_prob = sigmoid(-neg_vec_dot)
+#        
+#        # (scalar)
+#        loss += -np.log(neg_y_prob)
+#        
+#        # (scalar) * (d, ) = (d, )
+#        gradCenterVec += -(neg_y_prob - 1) * negWordVec
+#        
+#        # (scalar) * (d, ) = (d, )
+#        gradOutsideVecs[negWordIdx] += -(neg_y_prob - 1) * centerWordVec
+
+
+    
+    
+    # (K x d)
+    negWordVecs = outsideVectors[negSampleWordIndices]
+    
+    # ((K x d) * (d)).reshape(-1 ,1) = (K, 1)
+    neg_vec_dot = np.dot(negWordVecs, centerWordVec).reshape(-1, 1)
+    
+    # (K, 1)
+    neg_y_prob = np.apply_along_axis(sigmoid, axis=1, arr=-neg_vec_dot)
+    
+    # (scalar)
+    loss += np.sum(-np.log(neg_y_prob))
+    
+    # sum((K x 1) * (K x d), axis=0) = (1, d)
+    gradCenterVec += np.sum(-(neg_y_prob - 1) * negWordVecs, axis=0)
+
+    # (K, 1) * (d) = (K, d)
+    outside_grads = -(neg_y_prob - 1) * centerWordVec
+    
+    # group gradients by indices
+    unique_idxs = np.unique(negSampleWordIndices)
+    grads = []
+    
+    for idx in unique_idxs:
+        grads.append(outside_grads[negSampleWordIndices == idx].sum(axis=0))
+    grads = np.array(grads)
+    
+    # add gradients to corresponding indices
+    gradOutsideVecs[unique_idxs] += grads
+    
+
     ### END YOUR CODE
 
     return loss, gradCenterVec, gradOutsideVecs
