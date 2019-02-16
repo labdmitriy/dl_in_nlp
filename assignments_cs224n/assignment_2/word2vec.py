@@ -68,7 +68,7 @@ def naiveSoftmaxLossAndGradient(
     # softmax function - log-sum-exp trick
     # https://timvieira.github.io/blog/post/2014/02/11/exp-normalize-trick
     
-    # (1 x d) * (d x N) = (N x 1)
+    # ((1 x d) * (d x N)).reshape(-1, 1) = (N x 1)
     y_pred = softmax(np.dot(centerWordVec, outsideVectors.T)).reshape(-1, 1)
     
     # (N x 1)
@@ -187,7 +187,7 @@ def negSamplingLossAndGradient(
     # sum((K x 1) * (K x d), axis=0) = (1, d)
     gradCenterVec += np.sum(-(neg_y_prob - 1) * negWordVecs, axis=0)
 
-    # (K, 1) * (d) = (K, d)
+    # (K, 1) * (d, ) = (K, d)
     outside_grads = -(neg_y_prob - 1) * centerWordVec
     
     # group gradients by indices
