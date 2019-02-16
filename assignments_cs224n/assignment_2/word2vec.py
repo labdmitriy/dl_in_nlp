@@ -170,8 +170,6 @@ def negSamplingLossAndGradient(
 #        gradOutsideVecs[negWordIdx] += -(neg_y_prob - 1) * centerWordVec
 
 
-    
-    
     # (K x d)
     negWordVecs = outsideVectors[negSampleWordIndices]
     
