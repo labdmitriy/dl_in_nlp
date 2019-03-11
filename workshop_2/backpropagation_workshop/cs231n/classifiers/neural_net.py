@@ -110,8 +110,6 @@ class TwoLayerNet(object):
         # in the variable loss, which should be a scalar. Use the Softmax           #
         # classifier loss.                                                          #
         #############################################################################
-        num_train = X.shape[0]
-        
         # (N, C)
         scores -= np.max(scores, axis=1, keepdims=True)
         
@@ -122,7 +120,7 @@ class TwoLayerNet(object):
         probs = scores_exp / np.sum(scores_exp, axis=1, keepdims=True)
         
         # mean((N, ) / (N, )) = scalar
-        loss = np.mean(-np.log(probs[np.arange(num_train), y]))
+        loss = np.mean(-np.log(probs[np.arange(N), y]))
         
         # scalar
         loss += reg * (np.sum(W1 * W1) + np.sum(W2 * W2))
@@ -139,7 +137,7 @@ class TwoLayerNet(object):
         # grads['W1'] should store the gradient on W1, and be a matrix of same size #
         #############################################################################
         # (N, C)
-        probs[np.arange(num_train), y] -= 1
+        probs[np.arange(N), y] -= 1
         
         # ((N, C) / (N, 1)) - (N, C) = (N, C)
         dsum2 = probs
@@ -171,10 +169,10 @@ class TwoLayerNet(object):
         # (D, N) * (N, H) = (D, H)
         dW1 = np.dot(X.T, ddot1)
         
-        grads['W1'] = dW1 / num_train + 2 * reg * W1
-        grads['b1'] = db1 / num_train 
-        grads['W2'] = dW2 / num_train + 2 * reg * W2
-        grads['b2'] = db2 / num_train
+        grads['W1'] = dW1 / N + 2 * reg * W1
+        grads['b1'] = db1 / N 
+        grads['W2'] = dW2 / N + 2 * reg * W2
+        grads['b2'] = db2 / N
         
         #############################################################################
         #                              END OF YOUR CODE                             #
