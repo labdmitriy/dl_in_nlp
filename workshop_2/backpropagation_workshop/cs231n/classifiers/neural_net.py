@@ -115,8 +115,14 @@ class TwoLayerNet(object):
         # (N, C)
         scores -= np.max(scores, axis=1, keepdims=True)
         
+        # (N, C)
+        scores_exp = np.exp(scores)
+        
+        # (N, C)
+        probs = scores_exp / np.sum(scores_exp, axis=1, keepdims=True)
+        
         # mean((N, ) / (N, )) = scalar
-        loss = np.mean(-np.log(np.exp(scores[np.arange(num_train), y]) / np.sum(np.exp(scores), axis=1)))
+        loss = np.mean(-np.log(probs[np.arange(num_train), y]))
         
         # scalar
         loss += reg * (np.sum(W1 * W1) + np.sum(W2 * W2))
@@ -133,11 +139,10 @@ class TwoLayerNet(object):
         # grads['W1'] should store the gradient on W1, and be a matrix of same size #
         #############################################################################
         # (N, C)
-        y_ohe = np.zeros_like(scores)
-        y_ohe[np.arange(N), y] = 1
+        probs[np.arange(num_train), y] -= 1
         
         # ((N, C) / (N, 1)) - (N, C) = (N, C)
-        dsum2 = (np.exp(sum2) / np.sum(np.exp(sum2), axis=1, keepdims=True)) - y_ohe
+        dsum2 = probs
         
         # (N, C) * scalar = (N, C)
         ddot2 = dsum2 * 1
@@ -279,6 +284,7 @@ class TwoLayerNet(object):
         ###########################################################################
         # TODO: Implement this function; it should be VERY simple!                #
         ###########################################################################
+        # (N, )
         y_pred = np.argmax(self.loss(X), axis=1)
         ###########################################################################
         #                              END OF YOUR CODE                           #
