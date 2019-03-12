@@ -258,28 +258,21 @@ class FullyConnectedNet(object):
         X = X.reshape(X.shape[0], -1)
         cache = {}
         
-        a_out, cache[0] = affine_relu_forward(X, self.params['W1'], self.params['b1'])
+        out = X
         
-        for layer_num in range(1, self.num_layers - 1):
-            a_out, cache[layer_num] = affine_relu_forward(a_out, 
-                                                        self.params['W' + str(layer_num + 1)],
-                                                        self.params['b' + str(layer_num + 1)])
+        for layer_num in range(1, self.num_layers):
+            out, cache['fc' + str(layer_num)] = affine_relu_forward(out, 
+                                                        self.params['W' + str(layer_num)],
+                                                        self.params['b' + str(layer_num)])
+            if self.use_dropout:
+                out, cache['drop' + str(layer_num)] = dropout_forward(out, self.dropout_param)
         
-        z_out, cache[self.num_layers - 1] = affine_forward(a_out, 
+        out, cache['fc' + str(self.num_layers)] = affine_forward(out, 
                                                         self.params['W' + str(self.num_layers)],
                                                         self.params['b' + str(self.num_layers)])
         
-#        print(z_out.shape, cache.keys())
-                                                        
-#        W1, b1 = self.params['W1'], self.params['b1']
-#        W2, b2 = self.params['W2'], self.params['b2']
-#        X = X.reshape(X.shape[0], -1)
-#        
-#        a1, (fc1_cache, relu1_cache) = affine_relu_forward(X, W1, b1)
-#        z2, fc2_cache = affine_forward(a1, W2, b2)
-#        
-#        scores = z2
-        scores = z_out
+        scores = out
+        
         ############################################################################
         #                             END OF YOUR CODE                             #
         ############################################################################
@@ -306,29 +299,23 @@ class FullyConnectedNet(object):
         loss, dscores = softmax_loss(scores, y)
         loss += self.reg * 0.5 * np.sum(W * W)
         
-        grad_values = affine_backward(dscores, cache[self.num_layers - 1])
-        dX = grad_values[0]
+        grad_values = affine_backward(dscores, cache['fc' + str(self.num_layers)])
+        dout = grad_values[0]
         grads['W' + str(self.num_layers)] = grad_values[1] + self.reg * W
         grads['b' + str(self.num_layers)] = grad_values[2]
         
-        for layer_num in reversed(range(self.num_layers - 1)):
-            W = self.params['W' + str(layer_num + 1)]
+        for layer_num in reversed(range(1, self.num_layers)):
+            W = self.params['W' + str(layer_num)]
             loss += self.reg * 0.5 * np.sum(W * W)
             
-            grad_values = affine_relu_backward(dX, cache[layer_num])
-            dX = grad_values[0]
-            grads['W' + str(layer_num + 1)] = grad_values[1] + self.reg * W
-            grads['b' + str(layer_num + 1)] = grad_values[2]
-            
-#        print(loss, grads.keys())
-        
-#        dX, dW2, db2 = affine_backward(dscores, fc2_cache)
-#        dX, dW1, db1 = affine_relu_backward(dX, (fc1_cache, relu1_cache))
-#        
-#        grads['W1'] = dW1 + self.reg * W1
-#        grads['b1'] = db1 
-#        grads['W2'] = dW2 + self.reg * W2
-#        grads['b2'] = db2
+            if self.use_dropout:
+                dout = dropout_backward(dout, cache['drop' + str(layer_num)])
+                
+            grad_values = affine_relu_backward(dout, cache['fc' + str(layer_num)])
+            dout = grad_values[0]
+            grads['W' + str(layer_num)] = grad_values[1] + self.reg * W
+            grads['b' + str(layer_num)] = grad_values[2]
+
         ############################################################################
         #                             END OF YOUR CODE                             #
         ############################################################################
