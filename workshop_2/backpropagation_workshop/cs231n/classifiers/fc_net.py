@@ -304,6 +304,7 @@ class FullyConnectedNet(object):
         ############################################################################
         W = self.params['W' + str(self.num_layers)]
         loss, dscores = softmax_loss(scores, y)
+        loss += self.reg * 0.5 * np.sum(W * W)
         
         grad_values = affine_backward(dscores, cache[self.num_layers - 1])
         dX = grad_values[0]
