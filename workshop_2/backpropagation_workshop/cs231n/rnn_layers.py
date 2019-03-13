@@ -33,12 +33,7 @@ def rnn_step_forward(x, prev_h, Wx, Wh, b):
     # TODO: Implement a single forward step for the vanilla RNN. Store the next  #
     # hidden state and any values you need for the backward pass in the next_h   #
     # and cache variables respectively.                                          #
-    ##############################################################################
-    # (N, D) * (D, H) + (N, H) * (H, H) + (H, ) = (N, H)
-    #scores = np.dot(x, Wx) + np.dot(prev_h, Wh) + b
-    # (N, H)
-    #next_h = np.tanh(scores)
-    
+    ##############################################################################    
     # (N, D) * (D, H) = (N, H)
     dot1 = np.dot(x, Wx)
     
@@ -145,7 +140,26 @@ def rnn_forward(x, h0, Wx, Wh, b):
     # input data. You should use the rnn_step_forward function that you defined  #
     # above. You can use a for loop to help compute the forward pass.            #
     ##############################################################################
-    pass
+    T = x.shape[1]
+    N, H = h0.shape
+    
+    # (N, T, H)
+    h = np.zeros((N, T, H))
+    
+    cache = {}
+    
+    # (N, H)
+    h_t = h0
+    
+    for t in range(T):
+        # (N, D)
+        x_in = x[:, t, :]
+        
+        # (N, H)
+        h_t, cache['t' + str(t)] = rnn_step_forward(x_in, h_t, Wx, Wh, b)
+        
+        # (N, H)
+        h[:, t, :] = h_t
     ##############################################################################
     #                               END OF YOUR CODE                             #
     ##############################################################################
@@ -177,7 +191,34 @@ def rnn_backward(dh, cache):
     # sequence of data. You should use the rnn_step_backward function that you   #
     # defined above. You can use a for loop to help compute the backward pass.   #
     ##############################################################################
-    pass
+    _, x, h0, Wx, Wh, b = cache['t0']
+    
+    T = h0.shape[1]
+    N, D = x.shape
+    
+    dx = np.zeros((N, T, D))
+#    dh0 = np.zeros_like(h0)
+    dWx = np.zeros_like(Wx)
+    dWh = np.zeros_like(Wh)
+    db = np.zeros_like(b)
+    
+#    dx, dh0, dWx, dWh, db = rnn_step_backward(dh[:, T-1, :],
+#                                                           cache['t' + str(T-1)])
+    
+    print(dx.shape)
+        
+    for t in reversed(range(T)):
+        dx_t, dh_t, dWx_t, dWh_t, db_t = rnn_step_backward(dh[:, t, :],
+                                                           cache['t' + str(t)])
+        pass
+#        print(dx.shape, dx[:, t, :].shape, dx_t.shape)
+#        dx[:, t, :] += dx_t
+        #dh[:, t, :] += dh_t
+        dWx += dWx_t
+        dWh += dWh_t
+        db += db_t
+        
+    
     ##############################################################################
     #                               END OF YOUR CODE                             #
     ##############################################################################
