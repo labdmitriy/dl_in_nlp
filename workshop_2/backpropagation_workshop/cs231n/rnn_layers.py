@@ -34,7 +34,30 @@ def rnn_step_forward(x, prev_h, Wx, Wh, b):
     # hidden state and any values you need for the backward pass in the next_h   #
     # and cache variables respectively.                                          #
     ##############################################################################
-    pass
+    # (N, D) * (D, H) + (N, H) * (H, H) + (H, ) = (N, H)
+    #scores = np.dot(x, Wx) + np.dot(prev_h, Wh) + b
+    # (N, H)
+    #next_h = np.tanh(scores)
+    
+    # (N, D) * (D, H) = (N, H)
+    dot1 = np.dot(x, Wx)
+    
+    # (N, H) * (H, H) = (N, H)
+    dot2 = np.dot(prev_h, Wh)
+    
+    # (N, H) + (N, H) = (N, H)
+    sum1 = dot1 + dot2
+    
+    # (N, H) + (H, ) = (N, H)
+    sum2 = sum1 + b
+    
+    # (N, H)
+    tanh1 = np.tanh(sum2)
+    
+    # (N, H)
+    next_h = tanh1
+    
+    cache = (tanh1, x, prev_h, Wx, Wh, b)
     ##############################################################################
     #                               END OF YOUR CODE                             #
     ##############################################################################
@@ -63,7 +86,35 @@ def rnn_step_backward(dnext_h, cache):
     # HINT: For the tanh function, you can compute the local derivative in terms #
     # of the output value from tanh.                                             #
     ##############################################################################
-    pass
+    tanh1, x, prev_h, Wx, Wh, b = cache
+    
+    # (1 - (N, H)) o (N, H) = (N, H)
+    dsum2 = (1 - tanh1**2) * dnext_h
+    
+    # (N, H)
+    dsum1 = dsum2 * 1
+    
+    # (N, H)
+    ddot1 = dsum1 * 1
+    
+    # (N, H)
+    ddot2 = dsum1 * 1
+    
+    # sum((N, H), axis=0) = (H, )
+    db = np.sum(dsum2, axis=0)
+    
+    # (N, H) * (H, H) = (N, H)
+    dprev_h = np.dot(ddot2, Wh.T)
+    
+    # (H, N) * (N, H) = (H, H)
+    dWh = np.dot(prev_h.T, ddot2)
+    
+    # (N, H) * (H, N) =  (N, D)
+    dx = np.dot(ddot1, Wx.T)
+    
+    # (D, N) * (N, H) = (D, H)
+    dWx = np.dot(x.T, ddot1)
+    
     ##############################################################################
     #                               END OF YOUR CODE                             #
     ##############################################################################
