@@ -151,15 +151,15 @@ def rnn_forward(x, h0, Wx, Wh, b):
     # (N, H)
     h_t = h0
     
-    for t in range(T):
+    for t in range(1, T + 1):
         # (N, D)
-        x_in = x[:, t, :]
+        x_in = x[:, t - 1, :]
         
         # (N, H)
         h_t, cache['t' + str(t)] = rnn_step_forward(x_in, h_t, Wx, Wh, b)
         
         # (N, H)
-        h[:, t, :] = h_t
+        h[:, t - 1, :] = h_t
     ##############################################################################
     #                               END OF YOUR CODE                             #
     ##############################################################################
@@ -192,7 +192,7 @@ def rnn_backward(dh, cache):
     # defined above. You can use a for loop to help compute the backward pass.   #
     ##############################################################################
     #print(type(cache))
-    _, x, h0, Wx, Wh, b = cache['t0']
+    _, x, h0, Wx, Wh, b = cache['t1']
     
     T = dh.shape[1]
     N, D = x.shape
@@ -203,40 +203,33 @@ def rnn_backward(dh, cache):
     dWh = np.zeros_like(Wh)
     db = np.zeros_like(b)
     
-    dhs = np.zeros(T)
-    dhhs = np.zeros(T)
     
-    for t in reversed(range(T)):
-        tanh_t, x_t, h_t, Wx_t, Wh_t, b_t = cache['t' + str(t)]
+    for t in reversed(range(1, T + 1)):
+#        tanh_t, x_t, h_t, Wx_t, Wh_t, b_t = cache['t' + str(t)]]
+        dh_t = dh[:, t - 1, :]
         
-        # (N, H)
-        dhs[t] = rnn_backward(dh, cache['t' + str(t)])
+        for tt in reversed(range(1, t + 1)):
+            tanh, _, _, _, Wh, _ = cache['t' + str(tt)]
+            dx_t, dh_t, dWx_t, dWh_t, db_t = rnn_step_backward(dh_t,
+                                                               cache['t' + str(tt)])
+#            print(tt)
+
+            dx[:, tt - 1, :] += dx_t
+            
+            # (N, H) * (H, H) = (N, H)
+            dh0 += np.dot(1 - tanh**2, Wh) 
+            dWx += dWx_t 
+            dWh += dWh_t 
+            db += db_t 
+            
+            
+#            dx[:, t-1, :] = dx_t
+#            dh0 += dh_t * (T + 1 - tt)
+#            dWx += dWx_t * (T + 1 - tt)
+#            dWh += dWh_t * (T + 1 - tt)
+#            db += db_t * (T + 1 - tt)
         
-        # (N, H) * (H, H) = (N, H)
-        dhhs[t] = np.dot(1 - tanh_t**2, Wh)
-    else:
-        # (H, N) * (N, H) = (H, H)
-        dWh0 = np.dot((1 - tanh_t**2).T, h_t)
-        
     
-#    for t in reversed(range(T)):
-#        dWh += dhs[t] * np.prod(dhhs[:t]) * dWh0
-    
-    
-#    fot t in reversed(range(T)):
-#        dWh_t
-        
-    
-    
-#    
-##    dx_t, dprev_h_t, dWx_t, dWh_t, db_t = rnn_step_backward(dh[:, T-1, :], 
-##                                                                cache['t' + str(T-1)])
-##    dWx[:, T-1, :] = dWx_t
-#    
-#    for t in reversed(range(T)):
-#        dx_t, dprev_h_t, dWx_t, dWh_t, db_t = rnn_step_backward(dh[:, t, :], 
-#                                                                cache['t' + str(t)])
-#        dh0 += 
         
     ##############################################################################
     #                               END OF YOUR CODE                             #
