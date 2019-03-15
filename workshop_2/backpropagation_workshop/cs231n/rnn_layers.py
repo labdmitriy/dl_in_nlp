@@ -205,31 +205,27 @@ def rnn_backward(dh, cache):
     
     
     for t in reversed(range(1, T + 1)):
-#        tanh_t, x_t, h_t, Wx_t, Wh_t, b_t = cache['t' + str(t)]]
+        # (N, H)
         dh_t = dh[:, t - 1, :]
         
-        for tt in reversed(range(1, t + 1)):
-            tanh, _, _, _, Wh, _ = cache['t' + str(tt)]
+        for i in reversed(range(1, t + 1)):
+            tanh, _, _, _, Wh, _ = cache['t' + str(i)]
             dx_t, dh_t, dWx_t, dWh_t, db_t = rnn_step_backward(dh_t,
-                                                               cache['t' + str(tt)])
-#            print(tt)
-
-            dx[:, tt - 1, :] += dx_t
+                                                               cache['t' + str(i)])
+            # (N, D)
+            dx[:, i - 1, :] += dx_t
             
-            # (N, H) * (H, H) = (N, H)
-            dh0 += np.dot(1 - tanh**2, Wh) 
+            # (D, H)
             dWx += dWx_t 
+            
+            # (H, H)
             dWh += dWh_t 
+            
+            # (H, )
             db += db_t 
-            
-            
-#            dx[:, t-1, :] = dx_t
-#            dh0 += dh_t * (T + 1 - tt)
-#            dWx += dWx_t * (T + 1 - tt)
-#            dWh += dWh_t * (T + 1 - tt)
-#            db += db_t * (T + 1 - tt)
         
-    
+        # (N, H)
+        dh0 += dh_t
         
     ##############################################################################
     #                               END OF YOUR CODE                             #
