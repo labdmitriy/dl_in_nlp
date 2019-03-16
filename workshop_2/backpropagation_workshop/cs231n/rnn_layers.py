@@ -201,29 +201,25 @@ def rnn_backward(dh, cache):
     dWx = np.zeros_like(Wx)
     dWh = np.zeros_like(Wh)
     db = np.zeros_like(b)
-    
+    dh_t = np.zeros_like(dh0)
     
     for t in reversed(range(1, T + 1)):
-        # (N, H)
-        dh_t = dh[:, t - 1, :]
+        dx_t, dh_t, dWx_t, dWh_t, db_t = rnn_step_backward(dh[:, t - 1, :] + dh_t,
+                                                           cache['t' + str(t)])
+        # (N, D)
+        dx[:, t - 1, :] = dx_t
         
-        for i in reversed(range(1, t + 1)):
-            dx_t, dh_t, dWx_t, dWh_t, db_t = rnn_step_backward(dh_t,
-                                                               cache['t' + str(i)])
-            # (N, D)
-            dx[:, i - 1, :] += dx_t
-            
-            # (D, H)
-            dWx += dWx_t 
-            
-            # (H, H)
-            dWh += dWh_t 
-            
-            # (H, )
-            db += db_t 
+        # (D, H)
+        dWx += dWx_t 
         
-        # (N, H)
-        dh0 += dh_t
+        # (H, H)
+        dWh += dWh_t 
+        
+        # (H, )
+        db += db_t 
+        
+    # (N, H)
+    dh0 = dh_t
         
     ##############################################################################
     #                               END OF YOUR CODE                             #
@@ -530,30 +526,27 @@ def lstm_backward(dh, cache):
     dWh = np.zeros((H, 4 * H))
     db = np.zeros(4 * H)
     
+    dh_t = np.zeros_like(dh0)
+    dc_t = np.zeros_like(dh_t)
+    
     for t in reversed(range(1, T + 1)):
-        # (N, H)
-        dh_t = dh[:, t - 1, :]
+        dx_t, dh_t, dc_t, dWx_t, dWh_t, db_t = lstm_step_backward(dh[:, t - 1, :] + dh_t, 
+                                                                  dc_t,
+                                                                  cache['t' + str(t)])
+        # (N, D)
+        dx[:, t - 1, :] = dx_t
         
-        # (N, H)
-        dc_t = np.zeros_like(dh_t)
+        # (D, H)
+        dWx += dWx_t 
         
-        for i in reversed(range(1, t + 1)):
-            dx_t, dh_t, dc_t, dWx_t, dWh_t, db_t = lstm_step_backward(dh_t, dc_t,
-                                                                      cache['t' + str(i)])
-            # (N, D)
-            dx[:, i - 1, :] += dx_t
-            
-            # (D, H)
-            dWx += dWx_t 
-            
-            # (H, H)
-            dWh += dWh_t 
-            
-            # (H, )
-            db += db_t
+        # (H, H)
+        dWh += dWh_t 
         
-        # (N, H)
-        dh0 += dh_t
+        # (H, )
+        db += db_t
+        
+    # (N, H)
+    dh0 = dh_t
                 
     ##############################################################################
     #                               END OF YOUR CODE                             #
