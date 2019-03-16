@@ -141,39 +141,47 @@ class CaptioningRNN(object):
         # in your implementation, if needed.                                       #
         ############################################################################
         
-        if (self.cell_type == 'rnn'):
-            cache = {}
+        cache = {}
+    
+        # (N, H)
+        h0, cache['affine'] = affine_forward(features, W_proj, b_proj)
         
-            # (N, H)
-            h0, cache['affine'] = affine_forward(features, W_proj, b_proj)
-            
-            # (V, W)[N, T] = (N, T, W)
-            captions_emb, cache['embedding'] = word_embedding_forward(captions_in, W_embed)
-            
+        # (V, W)[N, T] = (N, T, W)
+        captions_emb, cache['embedding'] = word_embedding_forward(captions_in, W_embed)
+        
+        if self.cell_type == 'rnn':
             # (N, T, H)
             h, cache['rnn'] = rnn_forward(captions_emb, h0, Wx, Wh, b)
-            
-            # (N, T, V)
-            scores, cache['temp_affine'] = temporal_affine_forward(h, W_vocab, b_vocab)
-            
-            # scalar, (N, T, V)
-            loss, dscores = temporal_softmax_loss(scores, captions_out, mask)
-            
-            # (N, T, H), (H, V), (V, )
-            dh, grads['W_vocab'], grads['b_vocab'] = temporal_affine_backward(dscores, 
-                                                                              cache['temp_affine'])
-            
+        elif self.cell_type == 'lstm':
+            # (N, T, H)
+            h, cache['rnn'] = lstm_forward(captions_emb, h0, Wx, Wh, b)
+        
+        # (N, T, V)
+        scores, cache['temp_affine'] = temporal_affine_forward(h, W_vocab, b_vocab)
+        
+        # scalar, (N, T, V)
+        loss, dscores = temporal_softmax_loss(scores, captions_out, mask)
+        
+        # (N, T, H), (H, V), (V, )
+        dh, grads['W_vocab'], grads['b_vocab'] = temporal_affine_backward(dscores, 
+                                                                          cache['temp_affine'])
+        
+        if self.cell_type == 'rnn':
             # (N, T, W), (N, H), (W, H), (H, H), (H, )
             dcaptions_emb, dh0, grads['Wx'], grads['Wh'], grads['b'] = rnn_backward(dh, 
                                                                                     cache['rnn'])
-            
-            # (V, W)
-            grads['W_embed'] = word_embedding_backward(dcaptions_emb, 
-                                                       cache['embedding'])
-            
-            # (N, D), (D, H), (H, )
-            dfeatures, grads['W_proj'], grads['b_proj'] = affine_backward(dh0, 
-                                                                          cache['affine'])
+        elif self.cell_type == 'lstm':
+             # (N, T, W), (N, H), (W, H), (H, H), (H, )
+            dcaptions_emb, dh0, grads['Wx'], grads['Wh'], grads['b'] = lstm_backward(dh, 
+                                                                                     cache['rnn'])
+         
+        # (V, W)
+        grads['W_embed'] = word_embedding_backward(dcaptions_emb, 
+                                                   cache['embedding'])
+        
+        # (N, D), (D, H), (H, )
+        dfeatures, grads['W_proj'], grads['b_proj'] = affine_backward(dh0, 
+                                                                      cache['affine'])
         
         ############################################################################
         #                             END OF YOUR CODE                             #
@@ -248,10 +256,16 @@ class CaptioningRNN(object):
         
         # (N, D)
         init_word_emb, _ = word_embedding_forward(init_word, W_embed)
-                
+        
+        c = np.zeros_like(h)
+        
         for t in range(max_length):
-            # (N, H)
-            h, _ = rnn_step_forward(init_word_emb, h, Wx, Wh, b)
+            if self.cell_type == 'rnn':
+                # (N, H)
+                h, _ = rnn_step_forward(init_word_emb, h, Wx, Wh, b)
+            elif self.cell_type == 'lstm':
+                # (N, H)
+                h, c, _ = lstm_step_forward(init_word_emb, h, c, Wx, Wh, b)
             
             # (N, V)
             scores, _ = affine_forward(h, W_vocab, b_vocab)
