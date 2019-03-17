@@ -17,12 +17,12 @@ class SkipGramBatcher():
             window_end = min(i + window_size, len(text) - 1)
             for j in range(window_start, window_end + 1):
                 if j != i:
-                    self.data.append([text[i], text[j]])
+                    self.data.append([text[i], text[j]]) # all in memory?
         
         if shuffle:
-            self.shuffle()
+            self.shuffle() # shuffle after 1st epoch?
     
-    def generate_batches(self, batch_size):
+    def generate_batches(self, batch_size): # batch with word pairs
         inputs, targets = [], []
         for i, word_pair in enumerate(self.data, 1):
             inputs.append(word_pair[0])
@@ -33,7 +33,7 @@ class SkipGramBatcher():
                 inputs, targets = [], []
     
         if len(inputs) > 0:
-            yield inputs, targets
+            yield inputs, targets # yield remaining pairs
 
 
 class BatchTransposeTrickBatcher():
@@ -45,12 +45,12 @@ class BatchTransposeTrickBatcher():
     
     def fit(self, text, window_size, shuffle=True):
         for i in range(window_size, len(text) - window_size):
-            self.data.append([text[j] for j in range(i - window_size, i + window_size + 1)])
+            self.data.append([text[j] for j in range(i - window_size, i + window_size + 1)]) # all in memory?
         
         if shuffle:
-            self.shuffle()
+            self.shuffle() # shuffle after 1st epoch?
     
-    def generate_batches(self, batch_size):
+    def generate_batches(self, batch_size): # batch with whole window
         word_windows = []
         for i, word_window in enumerate(self.data, 1):
             word_windows.append(word_window)
@@ -77,7 +77,7 @@ def prepare_data(min_count, batcher=SkipGramBatcher, shuffle=True):
     frequent_words = dict((key, value) for key, value in counter.items() if value >= min_count)
     
     token2id = dict((key, i) for i, key in enumerate(frequent_words.keys()))
-    id2token = dict((i, key) for key, i in token2id.items())
+    id2token = dict((i, key) for key, i in token2id.items()) # like a regular list
     
     text = [word for word in text if word in token2id]
     text_tokenized = [token2id[word] for word in text]
