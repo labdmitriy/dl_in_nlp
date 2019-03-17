@@ -15,13 +15,13 @@ Task 2
 Score = 10
 
 Task 3
-Score = 10 + 2 (extra) = 12
+Score = 10
 
 Task 4 
-Score = 10 + 2 (extra) = 12
+Score = 10
 
 Task 5
-Score = 10 + 2 (extra) = 12 
+Score = 10
 
 
 katten_med_makrell
@@ -35,3 +35,9 @@ Score = 10
 polinakud
 Task 1
 Score = 10
+
+
+Oleg_Platonov
+Task 3 = 10
+Task 4 = 10
+Task 5 = 10

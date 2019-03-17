@@ -1,5 +1,0 @@
-+ someotherusername 	[2, 3, 4, 5] - [2, 3, 4, 5]
-Oleg_Platonov 	[4, 5] - [3, 4, 5]
-+ katten_med_makrell 	[1, 2] - [1, 2]	
-+ polinakud 	[1] - [1]
-[3] (my) - ?
