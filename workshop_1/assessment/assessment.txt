@@ -1,0 +1,37 @@
+someotherusername
+
+- one pair for each window
+- forward and loss - in forward()
+- instead of one hot embedding layer can be used
+- better to use softmax + cross-entropy on logits
+- MulticoreTSNE can be used for visualizations
+- batch-transpose trick
+    - change loss to sigmoids
+    - for positive/negative contexts, get true center word as center
+    - why need normalization, if we didn't use it before
+- how to view scores and grade extra scores
+
+Task 2
+Score = 10
+
+Task 3
+Score = 10 + 2 (extra) = 12
+
+Task 4 
+Score = 10 + 2 (extra) = 12
+
+Task 5
+Score = 10 + 2 (extra) = 12 
+
+
+katten_med_makrell
+Task 1 
+Score = 10
+
+Task 2
+Score = 10
+
+
+polinakud
+Task 1
+Score = 10
