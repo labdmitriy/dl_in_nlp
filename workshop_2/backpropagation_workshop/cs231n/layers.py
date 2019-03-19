@@ -270,7 +270,57 @@ def batchnorm_forward(x, gamma, beta, bn_param):
         # Referencing the original paper (https://arxiv.org/abs/1502.03167)   #
         # might prove to be helpful.                                          #
         #######################################################################
-        pass
+        
+#        # (1, D)
+#        mean = np.mean(x, axis=0)#, keepdims=True)
+#        
+#        # (1, D)
+#        var = np.var(x, axis=0)#, keepdims=True)
+#        
+#        # (N, D) - (1, D) / (1, D) = (N, D)
+#        xhat = (x - mean) / np.sqrt(var + eps)
+#        
+#        # (N, D)
+#        out = gamma * xhat + beta
+        
+        # (1, D)
+        mean = (1 / N) * np.sum(x, axis=0, keepdims=True)
+        
+        # (N, D)
+        sub1 = x - mean
+        
+        # (N, D)
+        pow1 = sub1 ** 2
+        
+        # (1, D)
+        var = (1 / N) * np.sum(pow1, axis=0, keepdims=True)
+        
+        # (1, D)
+        sum2 = var + eps
+        
+        # (1, D)
+        sqrt1 = np.sqrt(sum2)
+        
+        # (1, D)
+        inv1 = 1 / sqrt1
+        
+        # (N, D)
+        xhat = sub1 * inv1
+        
+        # (N, D)
+        prod2 = xhat * gamma
+        
+        # (N, D)
+        out = prod2 + beta
+        
+        
+        # (1, D)
+        running_mean = momentum * running_mean + (1 - momentum) * mean
+        
+        # (1, D)
+        running_var = momentum * running_var + (1 - momentum) * var
+        
+        cache = ()
         #######################################################################
         #                           END OF YOUR CODE                          #
         #######################################################################
@@ -281,7 +331,10 @@ def batchnorm_forward(x, gamma, beta, bn_param):
         # then scale and shift the normalized data using gamma and beta.      #
         # Store the result in the out variable.                               #
         #######################################################################
-        pass
+        
+        running_std = np.sqrt(running_var + eps)
+        out = (gamma / running_std) * x + (beta - (gamma * running_mean) / running_std)
+        
         #######################################################################
         #                          END OF YOUR CODE                           #
         #######################################################################
@@ -319,7 +372,41 @@ def batchnorm_backward(dout, cache):
     # Referencing the original paper (https://arxiv.org/abs/1502.03167)       #
     # might prove to be helpful.                                              #
     ###########################################################################
-    pass
+    N, D = dout.shape
+    
+    gamma, var, eps, mean, x, xhat = cache
+    
+    # (D, )
+    dbeta = np.sum(1 * dout, axis=0)
+    
+    # (D, )
+    dgamma = np.sum(xhat * dout, axis=0)
+    
+    
+    # (D, ) * (N, D) = (N, D)
+    dxhat = gamma * dgamma
+    
+    # sum(((N, D) - (D, )) * (D, ) * (N, D), axis=0) = (D, )
+    dvar = np.sum((x - mean) * (-1/2) * (1 / (var + eps)) * dxhat, axis=0)  
+    
+    # ((N, D) - (D, )) * (D, ) = (N, D)
+    dx_var = (1 / N) * 2 * (x - mean) * dvar
+    
+    # np.sum(((N, D) - (D, )) * (D, ) + (D, ), axis=0) = (D, )
+    dmean = -(1 / N) * 2 * (x - mean) * dvar + (-1 / np.sqrt(var + eps))
+    
+    # (1, D) (!!!)
+    dx_mean = (1 / N) * dmean
+    
+    # (D, ) * (N, D) = (N, D)
+    dx_xhat = (1 / np.sqrt(var + eps)) * dxhat
+    
+    # (N, D)
+    dx = dx_mean + dx_var + dx_xhat
+    
+    print(dxhat.shape, dvar.shape, dx_var.shape, dmean.shape,
+          dx_mean.shape, dx_xhat.shape, dx.shape)
+    
     ###########################################################################
     #                             END OF YOUR CODE                            #
     ###########################################################################
