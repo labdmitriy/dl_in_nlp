@@ -296,10 +296,7 @@ def batchnorm_forward(x, gamma, beta, bn_param):
         var = (1 / N) * np.sum(pow1, axis=0, keepdims=True)
         
         # (1, D)
-        sum2 = var + eps
-        
-        # (1, D)
-        sqrt1 = np.sqrt(sum2)
+        sqrt1 = np.sqrt(var + eps)
         
         # (1, D)
         inv1 = 1 / sqrt1
@@ -312,15 +309,14 @@ def batchnorm_forward(x, gamma, beta, bn_param):
         
         # (N, D)
         out = prod2 + beta
-        
-        
+           
         # (1, D)
         running_mean = momentum * running_mean + (1 - momentum) * mean
         
         # (1, D)
         running_var = momentum * running_var + (1 - momentum) * var
         
-        cache = ()
+        cache = (xhat, gamma, inv1, sub1, sqrt1, var, eps, x)
         #######################################################################
         #                           END OF YOUR CODE                          #
         #######################################################################
@@ -374,38 +370,46 @@ def batchnorm_backward(dout, cache):
     ###########################################################################
     N, D = dout.shape
     
-    gamma, var, eps, mean, x, xhat = cache
+    (xhat, gamma, inv1, sub1, sqrt1, var, eps, x) = cache
     
     # (D, )
-    dbeta = np.sum(1 * dout, axis=0)
-    
-    # (D, )
-    dgamma = np.sum(xhat * dout, axis=0)
-    
-    
-    # (D, ) * (N, D) = (N, D)
-    dxhat = gamma * dgamma
-    
-    # sum(((N, D) - (D, )) * (D, ) * (N, D), axis=0) = (D, )
-    dvar = np.sum((x - mean) * (-1/2) * (1 / (var + eps)) * dxhat, axis=0)  
-    
-    # ((N, D) - (D, )) * (D, ) = (N, D)
-    dx_var = (1 / N) * 2 * (x - mean) * dvar
-    
-    # np.sum(((N, D) - (D, )) * (D, ) + (D, ), axis=0) = (D, )
-    dmean = -(1 / N) * 2 * (x - mean) * dvar + (-1 / np.sqrt(var + eps))
-    
-    # (1, D) (!!!)
-    dx_mean = (1 / N) * dmean
-    
-    # (D, ) * (N, D) = (N, D)
-    dx_xhat = (1 / np.sqrt(var + eps)) * dxhat
+    dbeta = np.sum(dout, axis=0)
     
     # (N, D)
-    dx = dx_mean + dx_var + dx_xhat
+    dprod2 = dout
     
-    print(dxhat.shape, dvar.shape, dx_var.shape, dmean.shape,
-          dx_mean.shape, dx_xhat.shape, dx.shape)
+    # (D, )
+    dgamma = np.sum(xhat * dprod2, axis=0)
+    
+    # (N, D)
+    dxhat = gamma * dprod2
+    
+    # (N, D)
+    dsub1_1 = inv1 * dxhat
+    
+    # (1, D)
+    dinv1 = np.sum(sub1 * dxhat, axis=0)
+    
+    # (1, D)
+    dsqrt1 = (-1) * (1 / sqrt1**2) * dinv1
+    
+    # (1, D)
+    dvar = 0.5 * (1 / np.sqrt(var + eps)) * dsqrt1
+    
+    # (N, D)
+    dpow1 = (1 / N) * dvar
+    
+    # (N, D)
+    dsub1_2 = 2 * sub1 * dpow1 
+    
+    # (N, D)
+    dsub1 = dsub1_1 + dsub1_2
+    
+    # (1, D)
+    dmean = -np.sum(dsub1, axis=0)
+
+    # (N, D)
+    dx = dsub1 + (1 / N) * dmean
     
     ###########################################################################
     #                             END OF YOUR CODE                            #
