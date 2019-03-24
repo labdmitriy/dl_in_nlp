@@ -1,3 +1,5 @@
+Workshop 1
+
 someotherusername
 
 - one pair for each window
@@ -41,3 +43,27 @@ Oleg_Platonov
 Task 3 = 10
 Task 4 = 10
 Task 5 = 10
+
+
+
+Workshop 2
+
+rugged_monk
+Task 2 = 10
+Task 3 = 10
+Task 4 = 10
+
+Oleg_Platonov
+Task 2 = 10
+Task 3 = 10
+Task 4 = 10
+Task 5 = 10
+Task 6 = 10
+
+aprotopopov
+Task 1 = 10
+Task 5 = 10
+Task 6 = 10
+
+dshoot
+Task 1 = 10
