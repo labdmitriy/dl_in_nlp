@@ -9,7 +9,7 @@ Workshop 1
 Workshop 2
 + Oleg_Platonov [2, 3, 4, 5, 6] - [2, 3, 4, 5, 6]
 + rugged_monk [1, 2, 3, 4] - [2, 3, 4]
-Hanna Yakusevych [1] - []
++ Hanna Yakusevych [1] - []
 aprotopopov [5, 6] - [1, 5, 6]
 + dshoot [] = [1]
 
