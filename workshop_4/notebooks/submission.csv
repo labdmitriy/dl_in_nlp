@@ -31,7 +31,7 @@ id,label
 29,clickbait
 30,news
 31,news
-32,news
+32,clickbait
 33,clickbait
 34,news
 35,news
@@ -40,7 +40,7 @@ id,label
 38,news
 39,news
 40,news
-41,news
+41,clickbait
 42,news
 43,news
 44,news
@@ -137,7 +137,7 @@ id,label
 135,news
 136,news
 137,news
-138,news
+138,other
 139,news
 140,news
 141,news
@@ -179,7 +179,7 @@ id,label
 177,clickbait
 178,news
 179,news
-180,news
+180,clickbait
 181,news
 182,news
 183,news
@@ -222,8 +222,8 @@ id,label
 220,news
 221,news
 222,clickbait
-223,news
-224,other
+223,clickbait
+224,clickbait
 225,clickbait
 226,other
 227,other
@@ -231,7 +231,7 @@ id,label
 229,clickbait
 230,other
 231,clickbait
-232,news
+232,clickbait
 233,clickbait
 234,clickbait
 235,news
@@ -251,7 +251,7 @@ id,label
 249,news
 250,news
 251,news
-252,news
+252,clickbait
 253,news
 254,other
 255,news
@@ -350,7 +350,7 @@ id,label
 348,news
 349,news
 350,news
-351,news
+351,clickbait
 352,news
 353,news
 354,news
@@ -358,7 +358,7 @@ id,label
 356,news
 357,news
 358,news
-359,clickbait
+359,news
 360,news
 361,other
 362,news
@@ -399,7 +399,7 @@ id,label
 397,news
 398,clickbait
 399,news
-400,news
+400,clickbait
 401,news
 402,news
 403,other
@@ -428,7 +428,7 @@ id,label
 426,clickbait
 427,news
 428,clickbait
-429,other
+429,clickbait
 430,news
 431,news
 432,clickbait
@@ -504,7 +504,7 @@ id,label
 502,news
 503,news
 504,news
-505,news
+505,clickbait
 506,news
 507,news
 508,other
@@ -558,7 +558,7 @@ id,label
 556,news
 557,clickbait
 558,news
-559,news
+559,clickbait
 560,clickbait
 561,clickbait
 562,news
@@ -641,13 +641,13 @@ id,label
 639,news
 640,clickbait
 641,news
-642,news
+642,clickbait
 643,news
 644,news
 645,news
 646,news
 647,news
-648,news
+648,clickbait
 649,news
 650,other
 651,news
@@ -685,7 +685,7 @@ id,label
 683,clickbait
 684,news
 685,news
-686,news
+686,clickbait
 687,news
 688,clickbait
 689,news
@@ -732,7 +732,7 @@ id,label
 730,clickbait
 731,news
 732,news
-733,news
+733,clickbait
 734,news
 735,news
 736,other
@@ -747,7 +747,7 @@ id,label
 745,news
 746,news
 747,news
-748,news
+748,clickbait
 749,news
 750,news
 751,news
@@ -771,7 +771,7 @@ id,label
 769,news
 770,clickbait
 771,clickbait
-772,news
+772,clickbait
 773,news
 774,clickbait
 775,clickbait
@@ -842,7 +842,7 @@ id,label
 840,other
 841,news
 842,clickbait
-843,news
+843,clickbait
 844,news
 845,news
 846,news
@@ -871,7 +871,7 @@ id,label
 869,news
 870,news
 871,news
-872,news
+872,clickbait
 873,clickbait
 874,clickbait
 875,news
@@ -925,7 +925,7 @@ id,label
 923,clickbait
 924,news
 925,news
-926,other
+926,news
 927,news
 928,news
 929,news
@@ -964,7 +964,7 @@ id,label
 962,clickbait
 963,clickbait
 964,news
-965,clickbait
+965,news
 966,news
 967,news
 968,news
@@ -980,7 +980,7 @@ id,label
 978,news
 979,news
 980,other
-981,news
+981,clickbait
 982,other
 983,news
 984,news
@@ -1051,7 +1051,7 @@ id,label
 1049,news
 1050,news
 1051,news
-1052,news
+1052,clickbait
 1053,news
 1054,clickbait
 1055,news
@@ -1068,9 +1068,9 @@ id,label
 1066,news
 1067,news
 1068,news
-1069,news
+1069,clickbait
 1070,clickbait
-1071,news
+1071,clickbait
 1072,news
 1073,clickbait
 1074,news
@@ -1082,7 +1082,7 @@ id,label
 1080,news
 1081,news
 1082,other
-1083,news
+1083,clickbait
 1084,clickbait
 1085,news
 1086,news
@@ -1244,7 +1244,7 @@ id,label
 1242,news
 1243,news
 1244,news
-1245,news
+1245,clickbait
 1246,news
 1247,news
 1248,clickbait
@@ -1310,7 +1310,7 @@ id,label
 1308,news
 1309,other
 1310,news
-1311,clickbait
+1311,news
 1312,clickbait
 1313,news
 1314,news
@@ -1337,7 +1337,7 @@ id,label
 1335,news
 1336,news
 1337,news
-1338,news
+1338,clickbait
 1339,news
 1340,news
 1341,other
@@ -1488,7 +1488,7 @@ id,label
 1486,news
 1487,clickbait
 1488,news
-1489,news
+1489,clickbait
 1490,clickbait
 1491,news
 1492,news
@@ -1577,7 +1577,7 @@ id,label
 1575,other
 1576,clickbait
 1577,news
-1578,news
+1578,clickbait
 1579,news
 1580,clickbait
 1581,other
@@ -1654,7 +1654,7 @@ id,label
 1652,news
 1653,clickbait
 1654,news
-1655,news
+1655,clickbait
 1656,clickbait
 1657,news
 1658,news
@@ -1666,7 +1666,7 @@ id,label
 1664,clickbait
 1665,news
 1666,news
-1667,news
+1667,clickbait
 1668,news
 1669,news
 1670,news
@@ -1728,7 +1728,7 @@ id,label
 1726,news
 1727,other
 1728,news
-1729,news
+1729,clickbait
 1730,news
 1731,clickbait
 1732,news
@@ -1736,7 +1736,7 @@ id,label
 1734,news
 1735,news
 1736,news
-1737,news
+1737,clickbait
 1738,news
 1739,news
 1740,news
@@ -1775,7 +1775,7 @@ id,label
 1773,news
 1774,news
 1775,news
-1776,news
+1776,clickbait
 1777,news
 1778,news
 1779,news
@@ -1822,7 +1822,7 @@ id,label
 1820,news
 1821,clickbait
 1822,other
-1823,other
+1823,news
 1824,clickbait
 1825,news
 1826,other
@@ -1841,9 +1841,9 @@ id,label
 1839,news
 1840,clickbait
 1841,news
-1842,news
+1842,clickbait
 1843,news
-1844,news
+1844,clickbait
 1845,news
 1846,other
 1847,news
@@ -1903,12 +1903,12 @@ id,label
 1901,news
 1902,news
 1903,news
-1904,other
+1904,news
 1905,news
 1906,news
 1907,news
 1908,news
-1909,news
+1909,clickbait
 1910,other
 1911,news
 1912,news
@@ -1963,7 +1963,7 @@ id,label
 1961,news
 1962,news
 1963,news
-1964,news
+1964,clickbait
 1965,news
 1966,news
 1967,news
@@ -2003,7 +2003,7 @@ id,label
 2001,news
 2002,news
 2003,news
-2004,news
+2004,clickbait
 2005,clickbait
 2006,news
 2007,news
@@ -2019,7 +2019,7 @@ id,label
 2017,other
 2018,news
 2019,news
-2020,news
+2020,clickbait
 2021,news
 2022,news
 2023,news
@@ -2071,7 +2071,7 @@ id,label
 2069,clickbait
 2070,news
 2071,news
-2072,news
+2072,clickbait
 2073,news
 2074,news
 2075,news
@@ -2096,7 +2096,7 @@ id,label
 2094,news
 2095,clickbait
 2096,news
-2097,clickbait
+2097,news
 2098,news
 2099,news
 2100,news
@@ -2146,7 +2146,7 @@ id,label
 2144,clickbait
 2145,news
 2146,news
-2147,news
+2147,clickbait
 2148,clickbait
 2149,news
 2150,news
@@ -2436,13 +2436,13 @@ id,label
 2434,other
 2435,news
 2436,news
-2437,other
+2437,news
 2438,clickbait
 2439,other
 2440,news
 2441,news
 2442,clickbait
-2443,news
+2443,clickbait
 2444,news
 2445,other
 2446,news
@@ -2510,7 +2510,7 @@ id,label
 2508,news
 2509,news
 2510,news
-2511,news
+2511,clickbait
 2512,news
 2513,other
 2514,news
@@ -2621,7 +2621,7 @@ id,label
 2619,news
 2620,news
 2621,news
-2622,news
+2622,clickbait
 2623,news
 2624,other
 2625,clickbait
@@ -2678,7 +2678,7 @@ id,label
 2676,news
 2677,news
 2678,news
-2679,news
+2679,clickbait
 2680,clickbait
 2681,news
 2682,news
@@ -2711,7 +2711,7 @@ id,label
 2709,news
 2710,clickbait
 2711,news
-2712,other
+2712,clickbait
 2713,clickbait
 2714,news
 2715,news
@@ -2813,7 +2813,7 @@ id,label
 2811,news
 2812,news
 2813,news
-2814,news
+2814,clickbait
 2815,clickbait
 2816,news
 2817,news
@@ -2904,10 +2904,10 @@ id,label
 2902,news
 2903,news
 2904,news
-2905,news
+2905,clickbait
 2906,news
 2907,clickbait
-2908,clickbait
+2908,news
 2909,clickbait
 2910,news
 2911,news
@@ -3071,7 +3071,7 @@ id,label
 3069,news
 3070,news
 3071,news
-3072,news
+3072,clickbait
 3073,news
 3074,clickbait
 3075,clickbait
@@ -3158,7 +3158,7 @@ id,label
 3156,news
 3157,news
 3158,news
-3159,news
+3159,clickbait
 3160,news
 3161,news
 3162,news
@@ -3255,11 +3255,11 @@ id,label
 3253,news
 3254,news
 3255,news
-3256,news
+3256,clickbait
 3257,news
 3258,news
 3259,news
-3260,news
+3260,clickbait
 3261,clickbait
 3262,news
 3263,news
@@ -3304,9 +3304,9 @@ id,label
 3302,other
 3303,news
 3304,news
-3305,clickbait
+3305,news
 3306,news
-3307,other
+3307,news
 3308,other
 3309,news
 3310,news
@@ -3447,7 +3447,7 @@ id,label
 3445,clickbait
 3446,other
 3447,news
-3448,news
+3448,clickbait
 3449,clickbait
 3450,news
 3451,news
@@ -3493,7 +3493,7 @@ id,label
 3491,news
 3492,other
 3493,news
-3494,other
+3494,news
 3495,news
 3496,news
 3497,news
@@ -3521,7 +3521,7 @@ id,label
 3519,news
 3520,news
 3521,clickbait
-3522,other
+3522,news
 3523,clickbait
 3524,news
 3525,news
@@ -3540,7 +3540,7 @@ id,label
 3538,news
 3539,other
 3540,other
-3541,news
+3541,clickbait
 3542,news
 3543,news
 3544,news
@@ -3593,10 +3593,10 @@ id,label
 3591,news
 3592,news
 3593,news
-3594,clickbait
+3594,news
 3595,clickbait
 3596,news
-3597,news
+3597,clickbait
 3598,news
 3599,news
 3600,news
@@ -3619,7 +3619,7 @@ id,label
 3617,news
 3618,news
 3619,news
-3620,news
+3620,clickbait
 3621,news
 3622,news
 3623,news
@@ -3635,8 +3635,8 @@ id,label
 3633,news
 3634,news
 3635,news
-3636,news
-3637,news
+3636,clickbait
+3637,clickbait
 3638,news
 3639,news
 3640,news
@@ -3721,7 +3721,7 @@ id,label
 3719,news
 3720,news
 3721,news
-3722,news
+3722,clickbait
 3723,news
 3724,news
 3725,clickbait
@@ -3741,7 +3741,7 @@ id,label
 3739,news
 3740,news
 3741,news
-3742,other
+3742,clickbait
 3743,news
 3744,clickbait
 3745,news
@@ -3918,7 +3918,7 @@ id,label
 3916,news
 3917,news
 3918,news
-3919,news
+3919,clickbait
 3920,news
 3921,clickbait
 3922,news
@@ -3997,7 +3997,7 @@ id,label
 3995,clickbait
 3996,news
 3997,news
-3998,clickbait
+3998,news
 3999,news
 4000,news
 4001,news
@@ -4081,7 +4081,7 @@ id,label
 4079,clickbait
 4080,news
 4081,news
-4082,other
+4082,news
 4083,news
 4084,news
 4085,news
@@ -4181,7 +4181,7 @@ id,label
 4179,news
 4180,news
 4181,news
-4182,news
+4182,clickbait
 4183,news
 4184,other
 4185,news
@@ -4255,7 +4255,7 @@ id,label
 4253,news
 4254,clickbait
 4255,news
-4256,news
+4256,clickbait
 4257,news
 4258,news
 4259,other
@@ -4278,7 +4278,7 @@ id,label
 4276,clickbait
 4277,clickbait
 4278,news
-4279,news
+4279,clickbait
 4280,news
 4281,clickbait
 4282,news
@@ -4355,7 +4355,7 @@ id,label
 4353,news
 4354,other
 4355,clickbait
-4356,news
+4356,clickbait
 4357,news
 4358,clickbait
 4359,news
@@ -4400,7 +4400,7 @@ id,label
 4398,news
 4399,news
 4400,news
-4401,other
+4401,news
 4402,news
 4403,clickbait
 4404,news
@@ -4412,11 +4412,11 @@ id,label
 4410,news
 4411,clickbait
 4412,news
-4413,clickbait
+4413,news
 4414,news
 4415,news
 4416,news
-4417,news
+4417,clickbait
 4418,news
 4419,clickbait
 4420,news
@@ -4427,7 +4427,7 @@ id,label
 4425,news
 4426,news
 4427,news
-4428,news
+4428,clickbait
 4429,news
 4430,news
 4431,news
@@ -4439,7 +4439,7 @@ id,label
 4437,news
 4438,news
 4439,news
-4440,news
+4440,clickbait
 4441,news
 4442,news
 4443,news
@@ -4527,7 +4527,7 @@ id,label
 4525,news
 4526,news
 4527,news
-4528,news
+4528,clickbait
 4529,news
 4530,other
 4531,clickbait
@@ -4564,7 +4564,7 @@ id,label
 4562,other
 4563,news
 4564,news
-4565,news
+4565,clickbait
 4566,news
 4567,news
 4568,other
@@ -4624,7 +4624,7 @@ id,label
 4622,news
 4623,news
 4624,clickbait
-4625,other
+4625,news
 4626,news
 4627,news
 4628,news
@@ -4642,7 +4642,7 @@ id,label
 4640,news
 4641,news
 4642,news
-4643,news
+4643,clickbait
 4644,news
 4645,news
 4646,news
@@ -4682,7 +4682,7 @@ id,label
 4680,news
 4681,news
 4682,news
-4683,news
+4683,clickbait
 4684,news
 4685,other
 4686,news
@@ -4733,7 +4733,7 @@ id,label
 4731,clickbait
 4732,news
 4733,clickbait
-4734,news
+4734,clickbait
 4735,news
 4736,news
 4737,clickbait
@@ -4741,7 +4741,7 @@ id,label
 4739,news
 4740,news
 4741,news
-4742,news
+4742,clickbait
 4743,news
 4744,news
 4745,news
@@ -4793,7 +4793,7 @@ id,label
 4791,news
 4792,news
 4793,news
-4794,news
+4794,clickbait
 4795,news
 4796,news
 4797,other
@@ -4935,7 +4935,7 @@ id,label
 4933,news
 4934,news
 4935,news
-4936,clickbait
+4936,news
 4937,clickbait
 4938,other
 4939,news
@@ -4958,7 +4958,7 @@ id,label
 4956,news
 4957,news
 4958,news
-4959,clickbait
+4959,news
 4960,news
 4961,news
 4962,news
@@ -4993,7 +4993,7 @@ id,label
 4991,news
 4992,news
 4993,news
-4994,other
+4994,clickbait
 4995,news
 4996,news
 4997,clickbait
@@ -5011,11 +5011,11 @@ id,label
 5009,news
 5010,news
 5011,news
-5012,news
+5012,clickbait
 5013,news
 5014,clickbait
 5015,news
-5016,news
+5016,clickbait
 5017,news
 5018,clickbait
 5019,news
@@ -5075,7 +5075,7 @@ id,label
 5073,clickbait
 5074,news
 5075,news
-5076,news
+5076,clickbait
 5077,news
 5078,news
 5079,news
@@ -5173,7 +5173,7 @@ id,label
 5171,news
 5172,other
 5173,news
-5174,clickbait
+5174,news
 5175,news
 5176,news
 5177,clickbait
@@ -5325,7 +5325,7 @@ id,label
 5323,other
 5324,other
 5325,news
-5326,news
+5326,clickbait
 5327,clickbait
 5328,clickbait
 5329,news
@@ -5384,7 +5384,7 @@ id,label
 5382,clickbait
 5383,clickbait
 5384,news
-5385,news
+5385,clickbait
 5386,clickbait
 5387,news
 5388,news
@@ -5402,7 +5402,7 @@ id,label
 5400,news
 5401,news
 5402,clickbait
-5403,other
+5403,clickbait
 5404,other
 5405,other
 5406,news
@@ -5522,7 +5522,7 @@ id,label
 5520,news
 5521,news
 5522,news
-5523,news
+5523,clickbait
 5524,clickbait
 5525,other
 5526,clickbait
